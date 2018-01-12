@@ -3,7 +3,9 @@ package com.example.srigiriraju.helloworld;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
@@ -39,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getMainContent();
+        bindTimelineButton();
     }
 
     public void getMainContent() {
         RequestQueue queue = getRequestQueue();
         final String url = "http://172.142.5.128:5000/content/test-uuid";
+        //final String url = "http://192.168.0.12:5000/content/test-uuid";
         final List<Object> listObjects = new ArrayList<Object>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -96,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("file:///android_asset/main.html");
 //    }
 
+    public void bindTimelineButton() {
+        Button button = findViewById(R.id.main_activity_timeline);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_timeline);
+            }
+        });
+    }
+
     public void updateMainActivityView(List contentArr) {
         for (int i = 0; i < contentArr.size(); i++) {
             Object content = contentArr.get(i);
@@ -116,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             String url = (String) content.get("imageUrl");
             String event = (String) content.get("event");
+            String headline = (String) content.get("headline");
             String provider = (String) content.get("provider");
             Long publishedDate = (Long) content.get("publishedDate");
             Integer views = (Integer) content.get("views");
@@ -127,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             renderPublishedDate(publishedDate);
             renderPublishedViews(views);
             renderPublishedBody(body);
+            renderHeadline(headline);
         } catch (JSONException e) {
 
         }
@@ -167,12 +183,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void renderPublishedViews(Integer views) {
         TextView textView = findViewById(R.id.main_activity_views);
-        textView.setText(views.toString());
+        String viewStr = views.toString() + " viewing";
+        textView.setText(viewStr);
     }
 
     public void renderPublishedBody(String body) {
         TextView textView = findViewById(R.id.main_activity_body);
         textView.setText(body);
+    }
+
+    public void renderHeadline(String headline) {
+        TextView textView = findViewById(R.id.main_activity_headline);
+        textView.setText(headline);
     }
 
     public ImageLoader getImageLoader() {

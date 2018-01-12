@@ -8,12 +8,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
         <com.android.volley.toolbox.NetworkImageView
@@ -22,35 +19,55 @@
             android:layout_height="300dp"
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true" />
+        <LinearLayout
+            android:id="@+id/main_activity_layout_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/main_activity_image">
+            <TextView
+                android:id="@+id/main_activity_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"/>
 
+            <TextView
+                android:id="@+id/main_activity_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/main_activity_publishedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"/>
+
+        </LinearLayout>
         <TextView
-            android:id="@+id/main_activity_event"
+            android:layout_marginTop="25dp"
+            android:id="@+id/main_activity_headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/main_activity_image"/>
+            android:layout_below="@+id/main_activity_layout_1"/>
         <TextView
-            android:id="@+id/main_activity_provider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_event"/>
-        <TextView
-            android:id="@+id/main_activity_publishedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_provider"/>
-        <TextView
+            android:layout_marginTop="15dp"
             android:id="@+id/main_activity_views"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_publishedDate"/>
+            android:layout_below="@+id/main_activity_headline"/>
+
+        <Button
+            android:text="View Timeline"
+            android:id="@+id/main_activity_timeline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_activity_views"/>
 
         <TextView
             android:id="@+id/main_activity_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_views"/>
-
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/main_activity_timeline"/>
     </RelativeLayout>
-        </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
