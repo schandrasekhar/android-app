@@ -1,28 +1,23 @@
 package com.example.srigiriraju.helloworld;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.LruCache;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.android.volley.Request;
-import com.google.gson.JsonArray;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,24 +26,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by srigiriraju on 1/12/18.
+ */
 
-    public WebView webView;
-    public String Tag = "MainActivity";
+public class Main2Activity extends AppCompatActivity {
+    final String Tag = "TimelineActivity";
     public RequestQueue requestQueue;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         getMainContent();
-        bindTimelineButton();
     }
 
     public void getMainContent() {
         RequestQueue queue = getRequestQueue();
-        //final String url = "http://172.142.5.128:5000/content/test-uuid";
-        final String url = "http://192.168.0.12:5000/content/test-uuid";
+        //final String url = "http://172.142.5.128:5000/content/timeline-uuid";
+        final String url = "http://192.168.0.12:5000/content/timeline-uuid";
         final List<Object> listObjects = new ArrayList<Object>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 listObjects.add(jsonObject);
-                                updateMainActivityView(listObjects);
+                                updateTimelineActivityView(listObjects);
                             } catch (JSONException e) {
                                 String errMsg = e.getMessage();
                                 if (errMsg == null || errMsg.isEmpty()) {
@@ -69,31 +64,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public  void onErrorResponse(VolleyError error) {
-                        String errMsg = error.getMessage();
-                        if (errMsg == null || errMsg.isEmpty()) {
-                            errMsg = "Error while getting data for url: " + url;
-                        }
-                        Log.e(Tag, errMsg);
-                    }
-                });
+            @Override
+            public  void onErrorResponse(VolleyError error) {
+                String errMsg = error.getMessage();
+                if (errMsg == null || errMsg.isEmpty()) {
+                    errMsg = "Error while getting data for url: " + url;
+                }
+                Log.e(Tag, errMsg);
+            }
+        });
         queue.add(jsonArrayRequest);
     }
 
-    public void bindTimelineButton() {
-        Button button = findViewById(R.id.main_activity_timeline);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-                intent.putExtra("test", "message");
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void updateMainActivityView(List contentArr) {
+    public void updateTimelineActivityView(List contentArr) {
         for (int i = 0; i < contentArr.size(); i++) {
             Object content = contentArr.get(i);
             JSONObject obj = (JSONObject) content;
@@ -111,13 +94,8 @@ public class MainActivity extends AppCompatActivity {
             Integer views = (Integer) content.get("views");
             String body = (String) content.get("body");
 
-            renderImageFromUrl(url);
-            renderEventName(event);
-            renderProviderName(provider);
-            renderPublishedDate(publishedDate);
-            renderPublishedViews(views);
-            renderPublishedBody(body);
-            renderHeadline(headline);
+            //todo should check this >> https://developer.android.com/guide/topics/ui/layout/listview.html#Example
+            //todo should check this >> https://developer.android.com/training/material/lists-cards.html#RecyclerView
         } catch (JSONException e) {
 
         }
@@ -196,4 +174,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return requestQueue;
     }
+
+
 }
